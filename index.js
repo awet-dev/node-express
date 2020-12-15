@@ -9,10 +9,12 @@ app.get('/', (req, res) =>{
     res.send('Hello World')
 })
 
+// get request all student
 app.get('/students', (req, res)=> {
     res.send(students);
 })
 
+// get request for a specific student
 app.get('/students/:name', (req, res)=> {
     const name = req.params.name;
     const student = students.find(s => s.name === name)
@@ -20,16 +22,30 @@ app.get('/students/:name', (req, res)=> {
     res.send(student);
 })
 
-
+// post request || create or add
 app.post('/students', (req, res)=> {
     const student = {
-        id: students.length + 1,
+        language: req.body.language,
         name: req.body.name
     }
     students.push(student);
     res.send(students);
 })
 
+// put request || update
+app.put('/students/:name', (req, res)=>{
+    const student = students.find((s => s.name === req.params.name));
+    student.language = req.body.language;
+    res.send(student);
+})
+
+// delete request
+app.delete('/students/:name', (req, res)=> {
+    const student = students.find((s => s.name === req.params.name));
+    const index = students.indexOf(student);
+    students.splice(index, 1);
+    res.send(students);
+})
 const port = process.env.PORT || 3000;
 app.listen(port, ()=> {
     console.log(`listening to port number : ${port}`)
